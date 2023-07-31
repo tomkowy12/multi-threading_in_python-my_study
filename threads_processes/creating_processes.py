@@ -12,7 +12,11 @@ def do_work():
 
 
 if __name__ == '__main__':
-    multiprocessing.set_start_method('spawn')
-    for _ in range(5):
+    """
+    Here we can use all processor power. Memory is not shared. 
+    """
+    # multiprocessing.set_start_method('spawn')
+    multiprocessing.set_start_method('fork')
+    for _ in range(100):
         p = Process(target=do_work, args=())
         p.start()

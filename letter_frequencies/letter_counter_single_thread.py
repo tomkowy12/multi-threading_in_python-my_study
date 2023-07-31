@@ -4,7 +4,11 @@ import time
 
 
 def count_letters(url, frequency):
-    response = urllib.request.urlopen(url)
+    try:
+        response = urllib.request.urlopen(url)
+    except urllib.error.HTTPError:
+        print("Something went wrong with url: {}".format(url))
+        return
     txt = str(response.read())
     for l in txt:
         letter = l.lower()
@@ -17,8 +21,8 @@ def main():
     for c in "abcdefghijklmnopqrstuvwxyz":
         frequency[c] = 0
     start = time.time()
-    for i in range(1000, 1020):
-        count_letters(f"https://www.rfc-editor.org/rfc/rfc{i}.txt", frequency)
+    for i in range(34091900, 34091930):  # auch, that hurts, each page separately...
+        count_letters(f"https://stackoverflow.com/questions/{i}/", frequency)
     end = time.time()
     print(json.dumps(frequency, indent=4))
     print("Done, time taken", end - start)
