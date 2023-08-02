@@ -11,13 +11,13 @@ def count_letters(url, frequency, mutex):
     global should_be_finished
     try:
         response = urllib.request.urlopen(url)
-    except urllib.error.HTTPError:
+    except urllib.error.HTTPError as e:
         print("Something went wrong with url: {}".format(url))
         mutex.acquire()
         should_be_finished -= 1
         mutex.release()
+        print(e)
         return
-# TODO: Repair this method. It stucks because some part doesn't incremented finished_count properly
 
     txt = str(response.read())
     mutex.acquire()
@@ -37,7 +37,7 @@ def main():
         frequency[c] = 0
     global should_be_finished
     start = time.time()
-    for i in range(34091900, 34091930):  # auch, that hurts, each page separately...
+    for i in range(34091930, 34091940):  # auch, that hurts, each page separately...
         should_be_finished += 1
         Thread(target=count_letters, args=(f"https://stackoverflow.com/questions/{i}/", frequency, mutex)).start()
     while True:
