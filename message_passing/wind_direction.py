@@ -72,7 +72,7 @@ if __name__ == '__main__':
     Process(target=parse_to_array, args=(text_conn_b, metars_conn_a)).start()
     Process(target=extract_wind_direction, args=(metars_conn_b, winds_conn_a)).start()
     Process(target=mine_wind_distribution, args=(winds_conn_b, winds_dist_conn_a)).start()
-    path_with_files = "../metarfiles"
+    path_with_files = "./metarfiles"
     start = time.time()
     for file in os.listdir(path_with_files):
         f = open(join(path_with_files, file), "r")

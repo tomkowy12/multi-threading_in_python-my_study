@@ -51,7 +51,7 @@ def mine_wind_distribution(winds, wind_dist):
 
 
 if __name__ == '__main__':
-    path_with_files = "../metarfiles"
+    path_with_files = "./metarfiles"
     wind_dist = [0] * 8
     start = time.time()
     for file in os.listdir(path_with_files):

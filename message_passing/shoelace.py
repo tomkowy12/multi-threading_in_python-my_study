@@ -4,7 +4,7 @@ from multiprocessing import Process, Queue
 # (45,11),(41,15),(36,20)
 
 PTS_REGEX = "\((\d*),(\d*)\)"
-TOTAL_PROCESSES = 8
+TOTAL_PROCESSES = 12
 
 
 def find_area(points_queue):
@@ -30,7 +30,7 @@ if __name__ == '__main__':
         p = Process(target=find_area, args=(queue,))
         processes.append(p)
         p.start()
-    f = open("polygons.txt", "r")
+    f = open("./message_passing/polygons.txt", "r")
     lines = f.read().splitlines()
     start = time.time()
     for line in lines:
