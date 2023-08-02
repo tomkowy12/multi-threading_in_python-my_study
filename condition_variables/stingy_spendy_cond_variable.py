@@ -17,7 +17,7 @@ class StingySpendy:
     def spendy(self):
         for i in range(500000):
             self.cv.acquire()
-            while self.money < 20:
+            while self.money < 20:  # it can lock this threaed by infinity time, useful is timeout in wait()
                 self.cv.wait()
             self.money -= 20
             if self.money < 0:

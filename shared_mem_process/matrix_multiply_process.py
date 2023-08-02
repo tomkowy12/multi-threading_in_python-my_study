@@ -6,7 +6,7 @@ from multiprocessing import Barrier
 
 from multiprocessing.context import Process
 
-process_count = 8
+process_count = 12
 matrix_size = 200
 random = Random()
 
@@ -33,6 +33,8 @@ if __name__ == '__main__':
     work_complete = Barrier(process_count + 1)
     matrix_a = multiprocessing.Array('i', [0] * (matrix_size * matrix_size), lock=False)
     matrix_b = multiprocessing.Array('i', [0] * (matrix_size * matrix_size), lock=False)
+    # Program architecture allows us to don't lock matrices a and b, but result too.
+    # It is because each cell in matrice has its own processor and it can't be calculated by other even by mistake.
     result = multiprocessing.Array('i', [0] * (matrix_size * matrix_size), lock=False)
     for p in range(process_count):
         Process(target=work_out_row, args=(p, matrix_a, matrix_b, result, work_start, work_complete)).start()
@@ -40,9 +42,18 @@ if __name__ == '__main__':
     for t in range(10):
         generate_random_matrix(matrix_a)
         generate_random_matrix(matrix_b)
+        # result = [0 for r in range(matrix_size * matrix_size)]
+        # It is strange, but above line doesn't work properly. 
+        # above line creates new object of type array not multiprocessing.Array
+        
+        # Below code tries to create new object. It is still wrong, because processes has address to old object.
+        # result = multiprocessing.Array('i', [0] * (matrix_size * matrix_size), lock=False)
+        
+        # The only right code is below, because it just changes values of the same object
         for i in range(matrix_size * matrix_size):
             result[i] = 0
         work_start.wait()
         work_complete.wait()
+        print(*result)
     end = time.time()
     print("Done, time taken", end - start)
